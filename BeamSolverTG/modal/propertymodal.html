@@ -1,0 +1,115 @@
+	<!-- Modal -->
+	<div id="Properties" class="modal fade" role="dialog">
+  	    <div class="modal-dialog">
+
+   	  <!-- Modal content-->
+   	    <div class="modal-content">
+    		   <div class="modal-header">
+       		    <button type="button" class="close" data-dismiss="modal">&times;</button>
+      		    <h4 class="modal-title">Beam Properties</h4>
+      	          </div>
+      	          
+      	        
+                <form name="propertyForm"  class="form-inline" role="form"  novalidate>
+      		 
+      		  <div class="modal-body">
+                 
+                 
+                 
+                 
+                  <div class="row">
+                     <div class="col-xs-6">
+                     
+                      <div class="form-group">
+                         <label>Start X:</label>
+                       
+                              <input type="number" name="startX" placeholder="Start of Beam Property" id="startX"  ng-model="startX"  value="0.0"  style="width:100%;" required/>                         
+                       
+                          <span style="color:red" ng-show="propertyForm.startX.$dirty && propertyForm.startX.$invalid">
+                         <p class="help-block text-warning" ng-if="propertyForm.startX.$error.required">The start of the beam is required</p>
+                         <p class="help-block text-warning" ng-if="propertyForm.startX.$error.number">Entry must be a number</p>
+                         </span>
+                       </div>
+                    </div>
+                    <div class="col-xs-6">
+                    <div class="form-group">
+                        <label>End X:</label> <!--class="col-xs-2"-->
+                        
+                            <input type="number" name="endX" placeholder="End of Beam Property"  id="endX"  ng-model="endX"  style="width:100%;" required/>
+
+                         <span style="color:red" ng-show="propertyForm.endX.$dirty && propertyForm.endX.$invalid">
+                        <p class="help-block text-warning text-warning" ng-if="propertyForm.endX.$error.required">The end of the beam is required</p>
+                        <p class="help-block text-warning text-warning" ng-if="propertyForm.endX.$error.number">Entry must be a number</p>
+                        </span>
+                     </div>
+                    </div>
+                  </div> 
+                   
+                  
+                  <br />
+                  
+                 <div class="row">   
+                    <div class="col-xs-6">
+                       <div class="form-group">
+                        <label>Start I:</label>
+                   
+                             <input type="number" name="startI" placeholder="Area Moment of Inertia" id="startI" ng-model="startI" style="width:100%;" min="0.00000000001" required/>
+
+                        <span style="color:red" ng-show="propertyForm.startI.$dirty && propertyForm.startI.$invalid">
+                        <p class="help-block text-warning" ng-if="propertyForm.startI.$error.required">The area moment of inertia of the beam is required</p>
+                        <p class="help-block text-warning" ng-if="propertyForm.startI.$error.number">Entry must be a number</p>
+                        </span>
+                     </div>
+                  </div>
+                  <div class="col-xs-6">
+                     <div class="form-group">
+                        <label>**End I:</label>
+                 
+                            <input type="number" name="endI" placeholder="Area Moment of Inertia" id="endI" ng-model="endI" style="width:100%;" min="0.000000000001" />
+                       
+                         <span style="color:red text-warning" ng-show="propertyForm.endI.$dirty && propertyForm.endI.$invalid">
+                          <p class="help-block text-warning" ng-if="propertyForm.endI.$error.number">Entry must be a number</p>
+                          </span>
+                  
+                       </div>
+                    </div>
+                   </div>
+                   <br />
+                    <div class="row">   
+                   <div class="col-xs-2"></div>
+                         <div class="col-xs-8">
+                     <div class="form-group">
+                        <label>Modulus:</label>
+                 
+                            <input type="number" name="modulus" placeholder="Elastic Modulus" id="modulus" ng-model="modulus" style="width:100%;" value="10300000"  min="0"  required/>
+                       
+                           <span style="color:red text-warning" ng-show="propertyForm.modulus.$dirty && propertyForm.modulus.$invalid">
+                          <p class="help-block text-warning" ng-if="propertyForm.modulus.$error.required">The elastic modulus of the beam is required</p>
+                          <p class="help-block text-warning" ng-if="propertyForm.modulus.$error.number">Entry must be a number</p>
+                          </span>
+                  
+                       </div>
+                    </div>
+                    <div class="col-xs-2"></div>
+                    </div>
+                   
+                      <br />
+                    **Optional
+                    <div ng-show="propCtrl.error1">Make sure there is no overlap in your beams.</div>
+                    <div ng-show="propCtrl.error2">Make sure your beam has some length.</div>
+                    <div ng-show="propCtrl.error3">Make sure your beam properties have connectivity.</div>
+                    <div ng-show="propCtrl.error4">The end of your beam must be greater than the start of your beam.</div>
+                                <!--<div> Form is Valid: {{propertyForm.$valid}} </div> -->     
+                            
+	                	 </div>  <!-- End of Modal Form Body -->
+                       
+               		 <div class="modal-footer">
+       				 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       				  <button type="button" class="btn btn-primary" ng-click="propCtrl.submit()" ng-disabled="propertyForm.$invalid">Add</button>
+                	</div>
+                 </form>
+                  
+           </div>
+
+          </div>
+	</div>

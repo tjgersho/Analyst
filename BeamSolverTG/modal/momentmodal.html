@@ -1,0 +1,66 @@
+	<!-- Modal -->
+	<div id="Moments" class="modal fade" role="dialog">
+  	    <div class="modal-dialog">
+
+   	  <!-- Modal content-->
+   	    <div class="modal-content">
+    		   <div class="modal-header">
+       		    <button type="button" class="close" data-dismiss="modal">&times;</button>
+      		    <h4 class="modal-title">Applied Moment</h4>
+      	          </div>
+      	          
+      	        
+                <form name="momentForm"  class="form-inline" role="form"  novalidate>
+      		 
+      		  <div class="modal-body">
+                 
+                 
+                 
+                 
+                  <div class="row">
+                     <div class="col-xs-6">
+                     
+                      <div class="form-group">
+                         <label>Position X:</label>
+                       
+                              <input type="number" name="momentposX" placeholder="Moment Location" id="momentposX"  ng-model="momentposX"  value="0"  style="width:100%;" required/>                         
+                       
+                          <span style="color:red" ng-show="momentForm.momentposX.$dirty && momentForm.momentposX.$invalid">
+                         <p class="help-block text-warning" ng-if="momentForm.momentposX.$error.required">Enter the position of the moment</p>
+                         <p class="help-block text-warning" ng-if="momentForm.momentposX.$error.number">Entry must be a number</p>
+                         </span>
+                       </div>
+                    </div>
+                    
+                     <div class="col-xs-6">
+                     
+                      <div class="form-group">
+                         <label>Moment Value:</label>
+                       
+                              <input type="number" name="momentvalue" placeholder="Moment Value" id="momentvalue"  ng-model="momentvalue"  value="0"  style="width:100%;" required/>                         
+                       
+                          <span style="color:red" ng-show="momentForm.momentvalue.$dirty && momentForm.momentposX.$invalid">
+                         <p class="help-block text-warning" ng-if="momentForm.momentvalue.$error.required">Enter magnitude of the moment</p>
+                         <p class="help-block text-warning" ng-if="momentForm.momentvalue.$error.number">Entry must be a number</p>
+                         </span>
+                       </div>
+                    </div>
+                    
+                   </div>
+                   
+                           <!--<div> Form is Valid: {{momentForm.$valid}} </div>  -->
+                            <div ng-show="momentCtrl.error1">Make sure your moment is on your beam.</div>
+                           
+                    
+	                	 </div>  <!-- End of Modal Form Body -->
+                       
+               		 <div class="modal-footer">
+       				 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       				  <button type="button" class="btn btn-primary" ng-click="momentCtrl.submit()" ng-disabled="momentForm.$invalid">Add</button>
+                	</div>
+                 </form>
+                  
+           </div>
+
+          </div>
+	</div>

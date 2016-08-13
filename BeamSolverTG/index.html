@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>beamSolverTG</title>
+<meta name="fragment" content="!">
+<meta name="description" content="beamSolver is a 1D FEM for solving Beams with Euler-Bernoulli formulation.">
+<meta name="keywords" content="Engineering Beam Solver" />
+<meta name="robots" content="index, follow" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!-- Mobile Specific Metas  ================================================== -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<script   src="http://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+
+<!--<script type="text/javascript" src="scripts/vendors/angular-route.min.js"></script> -->
+
+<script type="text/javascript" src="js/mesh.js"></script>
+<script type="text/javascript" src="js/inputdata.js"></script>
+<script type="text/javascript" src="js/bandwidth.js"></script>
+<script type="text/javascript" src="js/stiffness.js"></script>
+<script type="text/javascript" src="js/modifyforbc.js"></script>
+<script type="text/javascript" src="js/bandsolver.js"></script>
+<script type="text/javascript" src="js/reactioncalc.js"></script>
+<script type="text/javascript" src="js/output.js"></script>
+
+<script type="text/javascript" src="beamsolvertg.js"></script>
+
+
+
+<style>
+.canvasimage{
+  border-bottom: 1px solid rgba(0,0,0,0.3); 
+  background-color: #FFF;
+  box-shadow: 0 9px 20px -5px rgba(0,0,0,0.8);
+}
+
+.verification{
+ border-bottom: 1px solid rgba(0,0,0,0.3); 
+  background-color: #FFF;
+  box-shadow: 0 9px 20px -5px rgba(0,0,0,0.8);
+  width:90%;
+  max-width: 1200px;
+  margin-left:auto;
+  margin-right:auto;
+  margin-bottom: 10px;
+  padding:5px;
+}
+
+.verification img{
+float:left;
+}
+
+.pagehitcount{
+font-family: "Bodoni MT", Didot, "Didot LT STD", "Book Antiqua", Garamond, "Times New Roman", serif;
+font-size: 2.5em;
+background-color:#FAFAFA;
+}
+
+.beamSolverSol{
+margin-left:auto;
+margin-right:auto;
+width:80%;
+}
+
+.beamSolverSol img{
+width: 100%;
+}
+
+
+.ng-invalid.ng-dirty{
+border-color: #FA787E;
+}
+
+.ng-invalid.ng-dirty{
+border-color: #78FA89;
+}
+.centered {
+margin-left:auto;
+margin-right:auto;
+padding:5px;
+max-width: 1200px;
+}
+
+.clr { clear:both; padding:0; margin:0; width:100%; font-size:0; line-height:0; }
+
+
+.tablefont{
+font-size:1em;
+}
+
+/*------------------------------------------------------------------------------*/
+/*------------------------MEDIA QUERIES---------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+
+@media only screen and (min-width: 960px){  
+.footier{
+width:32%;
+padding:10px;
+float:left;
+display:block;
+}
+.tablefont{
+font-size:1em;
+}
+}
+
+@media only screen and (min-width: 759px) and (max-width: 959px) {
+     
+.footier{
+width:32%;
+padding:10px;
+float:left;
+display:block;
+}
+.tablefont{
+font-size:0.9em;
+}
+}
+
+
+
+@media only screen and (min-width: 671px) and (max-width: 758px) {
+     
+.footier{
+width:47%;
+padding:10px;
+float:left;
+display:block;
+}
+.tablefont{
+font-size:0.8em;
+}
+}
+
+
+@media only screen and (min-width: 569px) and (max-width: 670px) {
+     
+.footier{
+width:47%;
+padding:10px;
+float:left;
+display:block;
+}
+.tablefont{
+font-size:0.7em;
+}
+}
+
+
+
+	/* All Mobile Sizes (devices and browser) */
+
+@media only screen and (max-width: 568px) {
+    
+.footier{
+width:100%;
+padding:10px;
+float:left;
+display:block;
+}
+.tablefont{
+font-size:0.6em;
+}
+}
+</style>
+
+
+
+</head>
+
+<body  ng-app="beamSolverTG">
+
+<div ng-controller="beamController as beamCtrl">
+
+<section ng-controller="TabController as tab">
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <img class="pull-left" src="logo.png" height="50">
+    </div>
+     <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+           <li ng-class="{ active:tab.isSet(2) }"><a href ng-click="tab.setTab(1)">beamSolver</a></li> 
+           <li ng-class="{ active:tab.isSet(3) }"><a href ng-click="tab.setTab(2)">Solver Validation </a></li> 
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div ng-show="tab.isSet(1)">
+
+
+<div class="centered">
+<div class="btn-group-horizontal" style="float:left;" ng-include="'buttons.html'"></div>
+</div>
+<div class="clr"></div>
+
+	    
+	   
+<div id="beamCanvasContainer" style="margin-left:auto; margin-right:auto; margin-top:50px; display:block; height:200px;" ng-show="beamCtrl.hasprops()">
+<canvas  id="beamCanvas" style="display:none;"  class="centered" width="100%" height="200" ng-bind="beamCtrl.drawcanvas()">
+Your browser does not support the canvas element.
+</canvas>
+<img id="beamCanvasImg" class="canvasimage"/>
+</div>
+
+
+
+
+<div class="clr"></div>
+   <!----------------------------------------->
+	      <!--DEBUG PANEL --------------------------->
+	      <!----------------------------------------->
+         <!--  <br /><br /> <div style="color:white; background-color:black; display:block; width:500px; float: right;">
+             Beam Model Object: {{beamCtrl.beam}}
+            
+            <br /><br />
+            
+             Screen Width: {{beamCtrl.wndwidth}}
+            
+            </div>
+        -->
+        
+            
+               <!----------------------------------------->
+	      <!--DEBUG PANEL --------------------------->
+	      <!----------------------------------------->
+   
+<div ng-show="beamCtrl.solveable()">  
+<div id="shearmomentCanvasContainer" style="margin-left:auto; margin-right:auto; margin-top:50px; display:block; height:200px;">
+<canvas  id="shearmomentCanvas" class="centered" width="100%" height="200" style="display:none;">
+Your browser does not support the canvas element.
+</canvas>
+<img id="shearmomentCanvasImg" class="canvasimage"/>
+</div>
+</div>
+
+
+<div class="clr"></div>
+
+<div ng-show="beamCtrl.solveable()">  
+<div id="shearCanvasContainer" style="margin-left:auto; margin-right:auto; margin-top:50px; display:block; height:200px;">
+<canvas  id="shearCanvas" class="centered" width="100%" height="200" style="display:none;">
+Your browser does not support the canvas element.
+</canvas>
+<img id="shearCanvasImg" class="canvasimage"/>
+</div>
+</div>
+
+
+<div class="clr"></div>
+   
+<div ng-show="beamCtrl.beam.solved">  
+<div id="momentCanvasContainer" style="margin-left:auto; margin-right:auto; margin-top:50px; display:block; height:200px;">
+<canvas  id="momentCanvas" class="centered" width="100%" height="200" style="display:none;">
+Your browser does not support the canvas element.
+</canvas>
+<img id="momentCanvasImg" class="canvasimage"/>
+</div>
+</div>
+
+<div class="clr"></div>
+   
+<div ng-show="beamCtrl.beam.solved">  
+<div id="slopeCanvasContainer" style="margin-left:auto; margin-right:auto; margin-top:50px; display:block; height:200px;">
+<canvas  id="slopeCanvas" class="centered" width="100%" height="200" style="display:none;">
+Your browser does not support the canvas element.
+</canvas>
+<img id="slopeCanvasImg" class="canvasimage"/>
+</div>
+</div>
+
+<div class="clr"></div>
+   
+<div ng-show="beamCtrl.beam.solved">  
+<div id="dispCanvasContainer" style="margin-left:auto; margin-right:auto; margin-top:50px; display:block; height:200px;">
+<canvas  id="dispCanvas" class="centered" width="100%" height="200" style="display:none;">
+Your browser does not support the canvas element.
+</canvas>
+<img id="dispCanvasImg" class="canvasimage"/>
+</div>
+</div>
+
+<div class="clr"></div>
+   
+<div ng-show="beamCtrl.beam.solved" style="margin-left:auto; margin-right:auto; width:95%; overflow:auto;">  
+<div class="tablefont" style="margin-left:auto; margin-right:auto; margin-top:50px; display:block; max-width: 1000px;">    
+<table  class="table table-striped table-condensed">  
+<thead> 
+<tr><th>X-Pos</th><th>Internal Shear</th><th>Internal Moment</th><th>Net External Force</th><th>Net External Moment</th><th>Beam Displacement</th><th>Beam Rotation</th></tr>
+</thead> 
+<tbody>
+<tr ng-repeat="query in beamCtrl.beam.fbdtable">
+<td> {{query.x | number:2}} </td><td> {{query.internalshear | number:2}} </td><td> {{query.internalmoment | number:2}} </td><td> {{query.externalforce | number:2}} </td>
+<td> {{query.externalmoment | number:2}} </td><td> {{query.beamdisp}} </td><td> {{query.beamrot}} </td>
+</tr>
+<tr><th colspan="3" style="text-align:center;">External Loads Sum:</th><td>{{beamCtrl.beam.sumforces | number:2}}</td><td>{{beamCtrl.beam.summoments | number:2}}</td><td></td><td></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+  
+  <div class="clr"></div>
+   <br /><br />   <br /><br />
+
+</div>
+
+
+
+
+
+<div ng-show="tab.isSet(2)">
+ <div style="width:90%; max-width:1000px; margin-left: auto; margin-right:auto;">
+ <h1>Validation:</h1>
+ 
+ <p>Verification that the solver gives accurate results, several solutions are compared to well formed and known solutions.  <br /><br/ >References include:</p>
+ <blockquote>1) Roark&#39;s Formulas for Stress and Strain <cite class="clearfix">—Young, Warren C. </cite></blockquote>
+ <blockquote>2) Airframe Stress Analysis and Sizing<cite class="clearfix">—Niu, Michael C.Y.</cite></blockquote>
+ <blockquote>3) Practical Stress Analysis for Design Engineers<cite class="clearfix">—Flabel, Jean-Claude  </cite></blockquote>
+ <p>The calculations will use the following general parameters unless otherwise noted: </p>
+ <img src="images/validation/parameters.PNG" width="200" />
+ 
+ <div class="verification">
+ 
+ <p>Pinned-Pinned beam centrally loaded. <img src="images/validation/pinpin.PNG" width="50%" />
+ 
+  <br />Solution:<br />
+   Table 8.1 Case 1e of Ref. 1, and is:<br />
+   <img src="images/validation/pinpincalcs.PNG" width="50%" />
+    <div class="clr"></div>
+    <div class="beamSolverSol">
+    <img  src="images/validation/solver/solve1.PNG"  /> <br />
+    <img  src="images/validation/solver/solve1-1.png" /><br />
+    <img  src="images/validation/solver/solve1-2.png" /><br />
+    </div>
+ </p>
+<div class="clr"></div>
+ <br />
+ </div>
+ 
+  <div class="verification">
+  <p>Pinned-Pinned beam evenly distributed load. <img src="images/validation/pinpin1.PNG" width="50%"  />
+ 
+  <br />Solution:<br />
+   Table 8.1 Case 2e of Ref. 1, and is:<br />
+   <img src="images/validation/pinpin1calcs.PNG" width="50%" />
+    <div class="clr"></div>
+    <div class="beamSolverSol">
+       <img  src="images/validation/solver/solve2.png"  /><br />
+    <img  src="images/validation/solver/solve2-1.png"  /><br />
+    </div>
+    
+ </p>
+ <div class="clr"></div>
+ <br />
+ </div>
+
+ 
+  <div class="verification">
+  <p>Pinned-Pinned beam linearly increasing distributed load. <img src="images/validation/pinpin2.PNG" width="50%"  />
+ 
+  <br />Solution:<br />
+   Table A-1 Case13 of Ref. 3, and is:<br />
+   <img src="images/validation/pinpin2calcs.PNG" width="50%" />
+   <div class="clr"></div>
+    <div class="beamSolverSol">
+     <img  src="images/validation/solver/solve3.png"  /><br />
+    <img  src="images/validation/solver/solve3-1.png"  /><br />
+</div>
+ </p>
+ <div class="clr"></div>
+ <br />
+ </div>
+ 
+  <div class="verification">
+  <p>Pinned-Pinned beam superimposition. <img src="images/validation/pinpin3.PNG" width="50%"  />
+ 
+  <br />Solution:<br />
+   Table A-1 Case13 of Ref. 3, with superimposing the other solutions and is:<br />
+   <img src="images/validation/pinpin3calcs1.PNG" width="50%"  />
+   <img src="images/validation/pinpin3calcs2.PNG" width="50%"  />
+   <img src="images/validation/pinpin3calcs3.PNG" width="50%"  />
+    <div class="clr"></div>
+     <div class="beamSolverSol">
+     <img  src="images/validation/solver/solve4.png"  /><br />
+    <img  src="images/validation/solver/solve4-1.png"  /><br />
+    <img  src="images/validation/solver/solve4-2.png"  /><br /></div>
+ </p>
+ <div class="clr"></div>
+ <br />
+ </div>
+ 
+ <div class="verification">
+  <p>Fixed-Fixed beam centrally loaded. <img src="images/validation/fixedfixed.PNG" width="50%"  />
+ 
+  <br />Solution:<br />
+   Table 8.1 Case 1d of Ref. 1, and is:<br />
+   <img src="images/validation/fixedfixedcalcs.PNG" width="50%"  />
+  <div class="clr"></div> <div class="beamSolverSol">
+    <img  src="images/validation/solver/solve5.png"  /><br />
+    <img  src="images/validation/solver/solve5-1.png"  /><br />
+    <img  src="images/validation/solver/solve5-2.png"  /><br />
+</div>
+ </p>
+ <div class="clr"></div>
+ <br />
+ </div>
+ 
+  <div class="verification">
+  <p>Fixed-Fixed beam evenly distributed load. <img src="images/validation/fixedfixed1.PNG" width="50%"  />
+ 
+  <br />Solution:<br />
+  Table 8.1 Case 2d of Ref. 1, and is:<br />
+   <img src="images/validation/fixedfixed1calcs.PNG" width="50%"  />
+  <div class="clr"></div> <div class="beamSolverSol">
+    <img  src="images/validation/solver/solve6.png"  /><br />
+    <img  src="images/validation/solver/solve6-1.png"  /><br />
+   
+</div>
+ </p>
+ <div class="clr"></div>
+ <br />
+ </div>
+ 
+   <div class="verification">
+  <p>Fixed-Fixed beam linearly increasing distributed load. <img src="images/validation/fixedfixed2.PNG" width="50%"  />
+ 
+  <br />Solution:<br />
+  Table A-1 Case14 of Ref. 3, and is:<br />
+   <img src="images/validation/fixedfixed2calcs.PNG" width="50%"  />
+  <div class="clr"></div> <div class="beamSolverSol">
+   <img  src="images/validation/solver/solve7.png"  /><br />
+    <img  src="images/validation/solver/solve7-1.png"  /><br />
+   </div>
+ </p>
+ <div class="clr"></div>
+ <br />
+ </div>
+ 
+   <div class="verification">
+  <p>Fixed-Fixed beam superimposition. <img src="images/validation/fixedfixed3.PNG" width="50%"  />
+ 
+  <br />Solution:<br />
+   Table A-1 Case13 of Ref. 3, with superimposing the other solutions and is:<br />
+   <img src="images/validation/fixedfixed3calcs1.PNG" width="50%"  />
+   <img src="images/validation/fixedfixed3calcs2.PNG" width="50%"  />
+   <img src="images/validation/fixedfixed3calcs3.PNG" width="50%"  />
+    <div class="clr"></div> <div class="beamSolverSol">
+   <img  src="images/validation/solver/solve8.png"  /><br />
+    <img  src="images/validation/solver/solve8-1.png"  /><br />
+    <img  src="images/validation/solver/solve8-2.png"  /><br />
+</div>
+ </p>
+ <div class="clr"></div>
+ <br />
+ </div>
+ 
+    <div class="verification">
+  <p>Fixed-Pinned beam central load with a moment release. <img src="images/validation/momrelese.PNG" width="50%"  />
+ 
+  <br />Solution:<br />
+    <img src="images/validation/momrelese1.PNG" width="50%"  />
+   <img src="images/validation/momrelesecalcs1.PNG" width="50%"  />
+   <img src="images/validation/momrelesecalcs2.PNG" width="50%"  />
+    <div class="clr"></div> <div class="beamSolverSol">
+    <img  src="images/validation/solver/solve9.png"  /><br />
+    <img  src="images/validation/solver/solve9-1.png"  /><br />
+    <img  src="images/validation/solver/solve9-2.png"  /><br />
+     <img  src="images/validation/solver/solve9-3.png"  /><br />
+    <img  src="images/validation/solver/solve9-4.png"  /><br /></div>
+ </p>
+ <div class="clr"></div>
+ <br />
+ </div>
+ 
+   <div class="verification">
+  <p>Fixed Cantiliever beam central load with a linear spring. <img src="images/validation/spring.PNG" width="50%"  />
+ 
+  <br />Solution:<br />
+    <img src="images/validation/springcalc1.PNG" width="50%"  />
+   <img src="images/validation/springcalc2.PNG" width="50%"  />
+   <img src="images/validation/springcalc3.PNG" width="50%"  />
+   <img src="images/validation/springcalc4.PNG" width="50%"  />
+   <img src="images/validation/springcalc5.PNG" width="50%"  />
+   <img src="images/validation/spring1.PNG" width="50%"  />
+   <img src="images/validation/springcalc6.PNG" width="50%"  />
+   <img src="images/validation/springcalc7.PNG" width="50%"  />
+    <div class="clr"></div> <div class="beamSolverSol">
+      <img  src="images/validation/solver/solve10.png"  /><br />
+    <img  src="images/validation/solver/solve10-1.png"  /><br />
+    <img  src="images/validation/solver/solve10-2.png"  /><br />
+     <img  src="images/validation/solver/solve10-3.png"  /><br />
+    <img  src="images/validation/solver/solve10-4.png"  /><br /></div>
+ </p>
+ <div class="clr"></div>
+ <br />
+ </div>
+ 
+ 
+
+  <div class="verification">
+  <p>Fixed Cantiliever beam central load with a rotational spring. <img src="images/validation/rotspring.PNG" width="50%"  />
+ 
+  <br />Solution:<br />
+   <img src="images/validation/rotspringcalc1.PNG" width="50%"  />
+   <img src="images/validation/rotspringcalc2.PNG" width="50%"  />
+   <img src="images/validation/rotspringcalc3.PNG" width="50%"  />
+   <img src="images/validation/rotspringcalc4.PNG" width="50%"  />
+   
+   <img src="images/validation/rotspring1.PNG" width="50%"  />
+   <img src="images/validation/rotspringcalc6.PNG" width="50%"  />
+   <img src="images/validation/rotspringcalc7.PNG" width="50%"  />
+    <div class="clr"></div> <div class="beamSolverSol">
+      <img  src="images/validation/solver/solve11.png"  /><br />
+    <img  src="images/validation/solver/solve11-1.png"  /><br />
+    <img  src="images/validation/solver/solve11-2.png"  /><br />
+     <img  src="images/validation/solver/solve11-3.png"  /><br />
+    <img  src="images/validation/solver/solve11-4.png"  /><br /></div>
+ </p>
+ <div class="clr"> </div>
+ <br />
+ </div>
+ 
+ <div class="verification">
+ 
+ <p>Fixed Cantiliever beam with a concentrated moment at the end. <img src="images/validation/moment.PNG" width="50%" />
+ 
+  <br />Solution:<br />
+   Table 8.1 Case 3a of Ref. 1, and is:<br />
+   <img src="images/validation/momentcalc1.PNG" width="50%" />
+    <div class="clr"></div> <div class="beamSolverSol">
+      <img  src="images/validation/solver/solve12.png"  /><br />
+    <img  src="images/validation/solver/solve12-1.png"  /><br />
+    <img  src="images/validation/solver/solve12-2.png"  /><br />
+     <img  src="images/validation/solver/solve12-3.png"  /><br /></div>
+   
+ </p>
+<div class="clr"></div>
+ <br />
+ </div>
+
+ 
+ 
+ 
+ 
+ 
+ 
+ </div>
+ <div class="clr"></div>
+   <br /><br />   <br /><br />	
+
+ </div>
+ 
+  <div ng-show="tab.isSet(4)">
+   <div style="width:90%; max-width:1000px; margin-left: auto; margin-right:auto;">
+ <h3>Terms and Conditions (Revision 12.19.14):</h3>
+
+<p style="position:relative; left:10px;">
+
+By using beamSolver.com you must agree to insure that any and all data derived from this site is verified by your own, and is your responsibility.<br /><br />
+
+beamSolver.com makes no garuntee that the results of the solver are applicable to your design.<br /><br />
+
+Your information will never be shared with anyone without your written consent, your beams are saved by your IP address, and if you are using a proxy server, others on that same proxy server may be able to delete or change your beams.<br /><br />
+
+beamSolver.com does not provide warranty or guarantee of any kind of the services the beamSolver.com software performs.<br /><br />
+
+You agree to indemnify and hold us and our Team harmless from any losses (including attorney fees) that result from any 
+claims you make that are not allowed under these Terms due to a "Limitation of Liability" or other provision. You also agree to 
+indemnify and hold us harmless from any losses (including attorney fees) that result from third-party claims that you or someone on your behalf that did something that, if true, would violate any of these Terms.<br /><br />
+
+beamSolver.com reserves the right to update or change the terms of conditions at any time.<br /><br />
+
+By using beamSolver.com you agree to the terms and conditions listed here and takes effect as soon as you use the solver.<br /><br />
+
+</p>
+
+ 
+ 
+ </div>
+ <div class="clr"></div>
+   <br /><br />   <br /><br />	
+
+ </div>
+
+
+ <div ng-show="tab.isSet(5)">
+ <div style="width:90%; max-width:1000px; margin-left: auto; margin-right:auto;">
+ 
+ <h3>Privacy Policy</h3>
+          <p>Here at beamSolver.com we respect your privacy. Any and all information collected on this 
+ site will be kept strictly confidential and will not be sold, disclosed to third parties or reused
+ without your permission. Any information you give to us will be held with care and will not be used
+ in ways that you have not consented to.</p>
+ </div>
+ <div class="clr"></div>
+   <br /><br />   <br /><br />	
+
+
+ </div>
+
+<hr/>
+
+<footer>
+
+<div ng-controller="contactusController as contactusCtrl">
+<div ng-include="'modal/contactusmodal.php'"></div>
+<div ng-include="'modal/thanks.html'"></div>
+</div>
+
+
+   <div>
+   
+     <div class="footier">
+      <div style="padding:5px; text-align:center;">
+        <button id="contactusbutton" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#contactUs" >
+         <span class="glyphicon glyphicon-bullhorn"></span><br>
+         Contact Us
+         </button>
+     </div>
+    </div>
+
+
+     <div class="footier">
+     
+      <p>Copyright &copy;  Paradigm Motion, LLC. All Rights Reserved. <br />
+              Design by <a href="http://www.paradigmmotion.com/" target="_blank">Paradigm Motion, LLC</a></p>
+        <p><a href="#" ng-click="tab.setTab(4)">Terms of Use</a> | <a href="#" ng-click="tab.setTab(5)">Privacy Policy</a></p>
+       
+       
+  
+     </div>
+     
+ 
+  <div class="footier">
+
+
+   </div>
+
+  </div>
+</footer>
+  </section>
+  
+  <div class="clr"></div>
+  <br /><br /><br /><br />
+
+   <br /><br />   <br /><br />	
+  
+  
+<!------------CONTACT US DIALOG-------------------------------------------------
+----------------------------------------------------------------------------------->
+<script>
+
+function refreshCaptcha()
+{
+    var img = document.images['captchaimg'];
+    img.src = img.src.substring(0,img.src.lastIndexOf("?"))+"?rand="+Math.random()*1000;
+}
+
+
+
+</script>
+
+
+
+       
+<property-modal></property-modal>
+<momentrelease-modal></momentrelease-modal>
+<constraint-modal></constraint-modal>
+<spring-modal></spring-modal>
+<distload-modal></distload-modal>
+<pointload-modal></pointload-modal>
+<moment-modal></moment-modal>
+<qloc-modal></qloc-modal>
+<save-modal></save-modal>
+
+
+
+ </div>
+ <script>
+$(document).ready(function () {
+ $(document).on('click','.navbar-collapse.in',function(e) {
+    if( $(e.target).is('a') ) {
+        $(this).collapse('hide');
+    }
+});
+
+  
+});
+
+</script>
+ 
+<script type="text/javascript" src="modal/propertyform.js"></script>
+<script type="text/javascript" src="modal/momentreleaseform.js"></script>
+<script type="text/javascript" src="modal/constraintform.js"></script>
+<script type="text/javascript" src="modal/springform.js"></script>
+<script type="text/javascript" src="modal/pointloadform.js"></script>
+<script type="text/javascript" src="modal/momentform.js"></script>
+<script type="text/javascript" src="modal/distloadform.js"></script>
+<script type="text/javascript" src="modal/qlocform.js"></script>
+<script type="text/javascript" src="modal/contactusform.js"></script>
+<script type="text/javascript" src="modal/saveform.js"></script>
+
+
+</body>
+
+</html>

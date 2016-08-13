@@ -1,0 +1,52 @@
+	<!-- Modal -->
+	<div id="MomRels" class="modal fade" role="dialog">
+  	    <div class="modal-dialog modal-sm">
+
+   	  <!-- Modal content-->
+   	    <div class="modal-content">
+    		   <div class="modal-header">
+       		    <button type="button" class="close" data-dismiss="modal">&times;</button>
+      		    <h4 class="modal-title">Moment Release</h4>
+      	          </div>
+      	          
+      	        
+                <form name="momrelForm"  class="form-inline" role="form"  novalidate>
+      		 
+      		  <div class="modal-body">
+                 
+                 
+                 
+                 
+                  <div class="row">
+                     <div class="col-xs-12">
+                     
+                      <div class="form-group">
+                         <label>Position X:</label>
+                       
+                              <input type="number" name="momrelposX" placeholder="Moment Release Location" id="momrelposX"  ng-model="momrelposX"  value="0"  style="width:100%;" required/>                         
+                       
+                          <span style="color:red" ng-show="momrelForm.momrelposX.$dirty && momrelForm.momrelposX.$invalid">
+                         <p class="help-block text-warning" ng-if="momrelForm.momrelposX.$error.required">Enter the position of the moment release</p>
+                         <p class="help-block text-warning" ng-if="momrelForm.momrelposX.$error.number">Entry must be a number</p>
+                         </span>
+                       </div>
+                    </div>
+                   </div>
+                   
+                                <!--<div> Form is Valid: {{momrelForm.$valid}} </div>    -->
+                            <div ng-show="momrelCtrl.error1">Make your moment release is on your beam.</div>
+                    <div ng-show="momrelCtrl.error2">You already have a moment release at this location.</div>
+                    
+                    
+	                	 </div>  <!-- End of Modal Form Body -->
+                       
+               		 <div class="modal-footer">
+       				 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       				  <button type="button" class="btn btn-primary" ng-click="momrelCtrl.submit()" ng-disabled="momrelForm.$invalid">Add</button>
+                	</div>
+                 </form>
+                  
+           </div>
+
+          </div>
+	</div>

@@ -1,0 +1,56 @@
+	<!-- Modal -->
+	<div id="KeyPoints" class="modal fade" role="dialog">
+  	    <div class="modal-dialog modal-sm">
+
+   	  <!-- Modal content-->
+   	    <div class="modal-content">
+    		   <div class="modal-header">
+       		    <button type="button" class="close" data-dismiss="modal">&times;</button>
+      		    <h4 class="modal-title">Query Locations</h4>
+      	          </div>
+      	          
+      	        
+                <form name="qlocForm"  class="form-inline" role="form"  novalidate>
+      		 
+      		  <div class="modal-body">
+                 
+                 <div ng-repeat="querylocs in qlocCtrl.beam.qlocs">
+                                Query Location:  {{querylocs.xpos}}
+                 </div>
+                 
+                 <div ng-bind="qlocposX"></div>
+                 
+                  <div class="row">
+                     <div class="col-xs-12">
+                     
+                      <div class="form-group">
+                         <label>Position X:</label>
+                       
+                              <input type="number" name="qlocposX" placeholder="Moment Release Location" id="qlocposX"  ng-model="qlocposX"  value="0"  style="width:100%;" required/>                         
+                       
+                          <span style="color:red" ng-show="qlocForm.qlocposX.$dirty && qlocForm.qlocposX.$invalid">
+                         <p class="help-block text-warning" ng-if="qlocForm.qlocposX.$error.required">Enter the position of the query location on beam</p>
+                         <p class="help-block text-warning" ng-if="qlocForm.qlocposX.$error.number">Entry must be a number</p>
+                         </span>
+                       </div>
+                    </div>
+                   </div>
+                   
+                     <button type="button" class="btn btn-primary" ng-click="qlocCtrl.submit()" ng-disabled="qlocForm.$invalid">Add</button>
+                   
+                             <!-- <div> Form is Valid: {{qlocForm.$valid}} </div>   -->
+                            <div ng-show="qlocCtrl.error1">Make sure your query location is on your beam.</div>
+                    <div ng-show="qlocCtrl.error2">You already have a query at this location.</div>
+                    
+                    
+	                	 </div>  <!-- End of Modal Form Body -->
+                       
+               		 <div class="modal-footer">
+       				 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                	</div>
+                 </form>
+                  
+           </div>
+
+          </div>
+	</div>

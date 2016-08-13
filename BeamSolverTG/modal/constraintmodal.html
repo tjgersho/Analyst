@@ -1,0 +1,95 @@
+	<!-- Modal -->
+	<div id="Constraints" class="modal fade" role="dialog">
+  	    <div class="modal-dialog">
+
+   	  <!-- Modal content-->
+   	    <div class="modal-content">
+    		   <div class="modal-header">
+       		    <button type="button" class="close" data-dismiss="modal">&times;</button>
+      		    <h4 class="modal-title">Constraints</h4>
+      	          </div>
+      	          
+      	        
+                <form name="constraintForm"  class="form-inline" role="form"  novalidate>
+      		 
+      		  <div class="modal-body">
+                 
+                 
+                 
+                 
+                  <div class="row">
+                     <div class="col-xs-6">
+                     
+                      <div class="form-group">
+                         <label>Position:</label>
+                       
+                              <input type="number" name="conposX" placeholder="Constraint Position" id="conposX"  ng-model="conposX"  value="0.0"  style="width:100%;" required/>                         
+                       
+                          <span style="color:red" ng-show="constraintForm.conposX.$dirty && constraintForm.conposX.$invalid">
+                         <p class="help-block text-warning" ng-if="constraintForm.conposX.$error.required">The start of the beam is required</p>
+                         <p class="help-block text-warning" ng-if="constraintForm.conposX.$error.number">Entry must be a number</p>
+                         </span>
+                       </div>
+                    </div>
+                    <div class="col-xs-6">
+                  
+  
+			   <div class="form-group">
+                      
+			    <label>Constraint Type</label>
+			      <select multiple  id="contype" style="width:100%; overflow:hidden; height:50px;" name="contype">
+			        
+			        <option value="A" selected>Translation</option>
+			        <option value="B">Rotation</option>
+				        
+			      </select>
+			    </div> 
+			     <span style="color:red" ng-show="constraintForm.contype.$dirty && constraintForm.contype.$invalid">
+                         <p class="help-block text-warning" ng-if="constraintForm.contype.$error.required">You must select a type.</p>
+                    
+                         </span>
+	
+                  
+                  
+                    </div>
+                  </div> 
+                   
+                  
+                  <br />
+            
+                    <div class="row">   
+                    <div class="col-xs-2"></div>
+                         <div class="col-xs-8">
+                     <div class="form-group">
+                        <label>**Prescribed Disp:</label>
+                 
+                            <input type="number" name="prescdisp" placeholder="Prescribed Disp" id="prescdisp" ng-model="prescdisp" style="width:100%;"  />
+                       
+                           <span style="color:red text-warning" ng-show="constraintForm.prescdisp.$dirty && constraintForm.prescdisp.$invalid">
+                          <p class="help-block text-warning" ng-if="constraintForm.prescdisp.$error.number">Entry must be a number</p>
+                          </span>
+                  
+                       </div>
+                    </div>
+                    <div class="col-xs-2"></div>
+                    </div>
+                   
+                      <br />
+                    **Optional
+                    <div ng-show="constraintCtrl.error1">You already have a constraint at this location.</div>
+                    <div ng-show="constraintCtrl.error2">Your constraint must be on the beam.</div>
+                                  
+                                <!-- <div> Form is Valid: {{constraintForm.$valid}} </div> -->   
+                            
+	                	 </div>  <!-- End of Modal Form Body -->
+                       
+               		 <div class="modal-footer">
+       				 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       				  <button type="button" class="btn btn-primary" ng-click="constraintCtrl.submit()" ng-disabled="constraintForm.$invalid">Add</button>
+                	</div>
+                 </form>
+                  
+           </div>
+
+          </div>
+	</div>

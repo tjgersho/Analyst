@@ -1,0 +1,11 @@
+        <button type="button" class="btn btn-info" ng-click="beamCtrl.newprob()">New Problem</button>
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Properties">Properties</button>
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Constraints" ng-disabled="!beamCtrl.hasprops()">Constraints</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#PointLoads" ng-disabled="!beamCtrl.hasprops()">Point Loads</button>
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Moments" ng-disabled="!beamCtrl.hasprops()">Applied Moment</button>
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Springs" ng-disabled="!beamCtrl.hasprops()">Springs</button>
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#DistLoads" ng-disabled="!beamCtrl.hasprops()">Distributed Loads</button>
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#MomRels" ng-disabled="!beamCtrl.hasprops()">Moment Relese</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#KeyPoints" ng-disabled="!beamCtrl.hasprops()">Query Locations</button>
+	<button type="button" class="btn btn-danger" ng-click="beamCtrl.solve()" ng-disabled="!beamCtrl.solveable()">Run</button>
+	<button type="button" class="btn btn-success"  data-toggle="modal" data-target="#SaveFile" >Open/Save</button>

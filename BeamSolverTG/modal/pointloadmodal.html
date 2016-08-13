@@ -1,0 +1,66 @@
+	<!-- Modal -->
+	<div id="PointLoads" class="modal fade" role="dialog">
+  	    <div class="modal-dialog">
+
+   	  <!-- Modal content-->
+   	    <div class="modal-content">
+    		   <div class="modal-header">
+       		    <button type="button" class="close" data-dismiss="modal">&times;</button>
+      		    <h4 class="modal-title">Point Load</h4>
+      	          </div>
+      	          
+      	        
+                <form name="pointloadForm"  class="form-inline" role="form"  novalidate>
+      		 
+      		  <div class="modal-body">
+                 
+                 
+                 
+                 
+                  <div class="row">
+                     <div class="col-xs-6">
+                     
+                      <div class="form-group">
+                         <label>Position X:</label>
+                       
+                              <input type="number" name="pointloadposX" placeholder="Point Load Location" id="pointloadposX"  ng-model="pointloadposX"  value="0"  style="width:100%;" required/>                         
+                       
+                          <span style="color:red" ng-show="pointloadForm.pointloadposX.$dirty && pointloadForm.pointloadposX.$invalid">
+                         <p class="help-block text-warning" ng-if="pointloadForm.pointloadposX.$error.required">Enter the position of the point load</p>
+                         <p class="help-block text-warning" ng-if="pointloadForm.pointloadposX.$error.number">Entry must be a number</p>
+                         </span>
+                       </div>
+                    </div>
+                    
+                     <div class="col-xs-6">
+                     
+                      <div class="form-group">
+                         <label>Load Value:</label>
+                       
+                              <input type="number" name="pointloadvalue" placeholder="Point Load Value" id="pointloadvalue"  ng-model="pointloadvalue"  value="0"  style="width:100%;" required/>                         
+                       
+                          <span style="color:red" ng-show="pointloadForm.pointloadvalue.$dirty && pointloadForm.pointloadposX.$invalid">
+                         <p class="help-block text-warning" ng-if="pointloadForm.pointloadvalue.$error.required">Enter magnitude of the point load</p>
+                         <p class="help-block text-warning" ng-if="pointloadForm.pointloadvalue.$error.number">Entry must be a number</p>
+                         </span>
+                       </div>
+                    </div>
+                    
+                   </div>
+                   
+                              <!--<div> Form is Valid: {{pointloadForm.$valid}} </div>  --> 
+                            <div ng-show="pointloadCtrl.error1">Make sure your point load is on your beam.</div>
+                           
+                    
+	                	 </div>  <!-- End of Modal Form Body -->
+                       
+               		 <div class="modal-footer">
+       				 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       				  <button type="button" class="btn btn-primary" ng-click="pointloadCtrl.submit()" ng-disabled="pointloadForm.$invalid">Add</button>
+                	</div>
+                 </form>
+                  
+           </div>
+
+          </div>
+	</div>
