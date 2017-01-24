@@ -8,12 +8,10 @@ Currently the only tool within Analyst, but it is a good one. This tool is used 
 
 ### Screenshots ###
 
-![fixedfixed.PNG](https://github.com/tjgersho/beamsolver/blob/master/images/validation/fixedfixed.PNG?raw=true)
+![fixedfixed.PNG](https://github.com/tjgersho/Analyst/blob/master/BeamSolverTG/images/validation/fixedfixed.PNG?raw=true)
 
 
-![solve5.png](https://github.com/tjgersho/beamsolver/blob/master/images/validation/solver/solve5.png?raw=true)
-![solve5-1.png](https://github.com/tjgersho/beamsolver/blob/master/images/validation/solver/solve5-1.png?raw=true)
-![solve5-2.png](https://github.com/tjgersho/beamsolver/blob/master/images/validation/solver/solve5-2.png?raw=true)
-
-
+![solve5.png](https://github.com/tjgersho/Analyst/blob/master/BeamSolverTG/images/validation/solver/solve5.png?raw=true)
+![solve5-1.png](https://github.com/tjgersho/Analyst/blob/master/BeamSolverTG/images/validation/solver/solve5-1.png?raw=true)
+![solve5-2.png](https://github.com/tjgersho/Analyst/blob/master/BeamSolverTG/images/validation/solver/solve5-2.png?raw=true)
 
