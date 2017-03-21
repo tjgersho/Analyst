@@ -196,6 +196,7 @@ font-size:0.6em;
       <ul class="nav navbar-nav">
            <li ng-class="{ active:tab.isSet(2) }"><a href ng-click="tab.setTab(1)">beamSolver</a></li> 
            <li ng-class="{ active:tab.isSet(3) }"><a href ng-click="tab.setTab(2)">Solver Validation </a></li> 
+	     <li><a href="/">Back to AnalysJS</a></li> 
       </ul>
     </div>
   </div>
@@ -203,6 +204,12 @@ font-size:0.6em;
 
 <div ng-show="tab.isSet(1)">
 
+<div class="container">
+
+    <h2>BeamSolverTG</h2> 
+    <p>Euler-Bernoulli beam solver</p> 
+
+</div>
 
 <div class="centered">
 <div class="btn-group-horizontal" style="float:left;" ng-include="'buttons.html'"></div>
@@ -638,7 +645,7 @@ By using beamSolver.com you agree to the terms and conditions listed here and ta
      <div class="footier">
      
       <p>Copyright &copy;  Paradigm Motion, LLC. All Rights Reserved. <br />
-              Design by <a href="http://www.paradigmmotion.com/" target="_blank">Paradigm Motion, LLC</a></p>
+              Design by <a href="https://paradigmmotion.com/" target="_blank">Paradigm Motion, LLC</a></p>
         <p><a href="#" ng-click="tab.setTab(4)">Terms of Use</a> | <a href="#" ng-click="tab.setTab(5)">Privacy Policy</a></p>
        
        
